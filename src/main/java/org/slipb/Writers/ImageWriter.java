@@ -17,40 +17,17 @@ import java.io.IOException;
 
 public class ImageWriter {
 
-    private static final String fileType = "png";
+    private static final String FILE_TYPE = "png";
+    private static final String FILE_NAME = "QR." + FILE_TYPE;
+    private String filePath;
 
-    private BitMatrix bitMatrix;
-    private File file;
-
-    public ImageWriter(BitMatrix bitMatrix, String filePath) {
-        this.bitMatrix = bitMatrix;
-        this.file = new File(filePath + "/QR.png");
+    public ImageWriter(String filePath) {
+        this.filePath = filePath + "/" + FILE_NAME;
     }
 
-    public BufferedImage generateImage() {
-
-        int matrixWidth = bitMatrix.getWidth();
-        BufferedImage image = new BufferedImage(matrixWidth, matrixWidth, BufferedImage.TYPE_INT_RGB);
-        image.createGraphics();
-
-        Graphics2D graphics = (Graphics2D) image.getGraphics();
-        graphics.setColor(Color.WHITE);
-        graphics.fillRect(0, 0, matrixWidth, matrixWidth);
-        graphics.setColor(Color.BLACK);
-
-        for (int i = 0; i < matrixWidth; i++) {
-            for (int j = 0; j < matrixWidth; j++) {
-                if (bitMatrix.get(i, j)) {
-                    graphics.fillRect(i, j, 1, 1);
-                }
-            }
-        }
-
-        return image;
-    }
-
-    public void output(BufferedImage image) throws IOException {
+    public void write(BufferedImage image) throws IOException {
+        File file = new File(filePath);
         file.mkdirs();
-        ImageIO.write(image, fileType, file);
+        ImageIO.write(image, FILE_TYPE, file);
     }
 }

@@ -21,17 +21,31 @@ public class IDGenerator {
     private static final String POS_RESPONSE = "ID FREE";
     private static final String NEG_RESPONSE = "ID USED";
 
+    private static final String RE_GENERATE = "ID already in use, regenerating...";
     private static final String HTTP_POST_FAILED = "HTTP POST Request failed, retrying...";
     private static final String MAX_HTTP_POST_FAILED = "HTTP POST Request failed, max attempts reached. Exiting...";
 
-    private static UUID uuid;
 
-    public IDGenerator() {
+    public static UUID generateID() {
 
         UUID potentialUUID = UUID.randomUUID();
+
+        if (checkID(potentialUUID)) {
+            return potentialUUID;
+        } else {
+            return generateID();
+        }
+    }
+
+    public static String toString(UUID uuid) {
+        return uuid.toString();
+    }
+
+    private static Boolean checkID(UUID uuid) {
+
         int attempts = 0; // try each HTTP request MAX_ATTEMPTS times
         JsonSender jsonSender = new JsonSender(SERVER_URL);
-        String json = new JsonBuilder(potentialUUID).getString();
+        String json = new JsonBuilder(uuid).getString();
 
         while (true) {
 
@@ -47,11 +61,10 @@ public class IDGenerator {
             responseString = POS_RESPONSE; // TODO: Implement properly
 
             if (responseString.equals(POS_RESPONSE)) { // Good ID
-                break;
+                return true;
             } else if (responseString.equals(NEG_RESPONSE)) { // ID already used
-                attempts = 0; // reset attempts for each new ID
-                potentialUUID = UUID.randomUUID(); // try a new ID
-                json = new JsonBuilder(potentialUUID).getString(); // generate new json
+                System.out.println(RE_GENERATE);
+                return false;
             } else if (attempts >= MAX_ATTEMPTS - 1) {
                 System.err.println(MAX_HTTP_POST_FAILED);
                 System.exit(-1);
@@ -61,10 +74,5 @@ public class IDGenerator {
             }
         }
 
-        this.uuid = potentialUUID;
-    }
-
-    public String toString() {
-        return this.uuid.toString();
     }
 }

@@ -11,17 +11,15 @@ import java.io.PrintWriter;
  */
 
 public class FileWriter {
-    private static final String fileType = "id";
 
-    private String id;
+    private static final String FILE_NAME = "raspberry.id";
     private String filePath;
 
-    public FileWriter(String id, String filePath) {
-        this.id = id;
-        this.filePath = filePath + "/raspberry.id";
+    public FileWriter(String filePath) {
+        this.filePath = filePath + "/" + FILE_NAME;
     }
 
-    public void output() throws IOException {
+    public void write(String id) throws IOException {
         PrintWriter out = new PrintWriter(filePath);
         out.print(id);
         out.close();

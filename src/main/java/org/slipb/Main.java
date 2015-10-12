@@ -20,32 +20,29 @@ public class Main {
     private static final String GENERATING = "Generating ";
     private static final String CODES = " QR codes...";
 
-
     public static void main(String[] args) {
 
         int codes = Integer.parseInt(args[0]);
-        String outputFilePath = args[1];
+        String outputFolder = args[1];
         System.out.println(GENERATING + codes + CODES);
 
         // main execution loop
         for (int i = 0; i < codes; i++) {
 
-            String id = (new IDGenerator()).toString();
-            System.out.println("UUID " + (i+1) + " is " + id);
-            String filePath = outputFilePath + "/" + (i+1);
+            String id = IDGenerator.toString(IDGenerator.generateID());
+            System.out.println("UUID " + (i + 1) + " is " + id);
+            String filePath = outputFolder + "/" + (i + 1);
 
             try {
-                BitMatrix bitMatrix = (new QRCodeGenerator(id)).getMatrix();
+                QRCodeGenerator qrCodeGenerator = new QRCodeGenerator(id);
+                BufferedImage image = qrCodeGenerator.getImage();
 
-                ImageWriter imageWriter = new ImageWriter(bitMatrix, filePath);
-                BufferedImage image = imageWriter.generateImage();
-                imageWriter.output(image);
+                ImageWriter imageWriter = new ImageWriter(filePath);
+                imageWriter.write(image);
 
-                FileWriter fileWriter = new FileWriter(id, filePath);
-                fileWriter.output();
+                FileWriter fileWriter = new FileWriter(filePath);
+                fileWriter.write(id);
 
-            } catch (WriterException ex) {
-                ex.printStackTrace();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
