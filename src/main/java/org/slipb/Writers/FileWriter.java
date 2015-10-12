@@ -1,7 +1,6 @@
-package org.slipb.Output;
+package org.slipb.Writers;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -11,13 +10,13 @@ import java.io.PrintWriter;
  * TODO: Description
  */
 
-public class IDOutputter {
+public class FileWriter {
     private static final String fileType = "id";
 
     private String id;
     private String filePath;
 
-    public IDOutputter(String id, String filePath) {
+    public FileWriter(String id, String filePath) {
         this.id = id;
         this.filePath = filePath + "/raspberry.id";
     }

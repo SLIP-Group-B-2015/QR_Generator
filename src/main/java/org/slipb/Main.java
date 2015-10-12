@@ -6,8 +6,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import org.slipb.Generators.IDGenerator;
 import org.slipb.Generators.QRCodeGenerator;
-import org.slipb.Output.IDOutputter;
-import org.slipb.Output.QRCodeOutputter;
+import org.slipb.Writers.FileWriter;
+import org.slipb.Writers.ImageWriter;
 
 /**
  * Created by Marshall Bradley (marshallbradley93@gmail.com)
@@ -37,12 +37,12 @@ public class Main {
             try {
                 BitMatrix bitMatrix = (new QRCodeGenerator(id)).getMatrix();
 
-                QRCodeOutputter qrCodeOutputter = new QRCodeOutputter(bitMatrix, filePath);
-                BufferedImage image = qrCodeOutputter.generateImage();
-                qrCodeOutputter.output(image);
+                ImageWriter imageWriter = new ImageWriter(bitMatrix, filePath);
+                BufferedImage image = imageWriter.generateImage();
+                imageWriter.output(image);
 
-                IDOutputter idOutputter = new IDOutputter(id, filePath);
-                idOutputter.output();
+                FileWriter fileWriter = new FileWriter(id, filePath);
+                fileWriter.output();
 
             } catch (WriterException ex) {
                 ex.printStackTrace();

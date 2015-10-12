@@ -1,4 +1,4 @@
-package org.slipb.Output;
+package org.slipb.Writers;
 
 import com.google.zxing.common.BitMatrix;
 
@@ -15,14 +15,14 @@ import java.io.IOException;
  */
 
 
-public class QRCodeOutputter {
+public class ImageWriter {
 
     private static final String fileType = "png";
 
     private BitMatrix bitMatrix;
     private File file;
 
-    public QRCodeOutputter(BitMatrix bitMatrix, String filePath) {
+    public ImageWriter(BitMatrix bitMatrix, String filePath) {
         this.bitMatrix = bitMatrix;
         this.file = new File(filePath + "/QR.png");
     }
