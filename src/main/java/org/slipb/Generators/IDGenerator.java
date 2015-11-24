@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class IDGenerator {
 
-    private static final String SERVER_URL = "http://www.test.com";
+    private static final String SERVER_URL = "http://193.62.81.88:5000";
     private static final int MAX_ATTEMPTS = 3;
     private static final String POS_RESPONSE = "ID FREE";
     private static final String NEG_RESPONSE = "ID USED";
@@ -30,11 +30,7 @@ public class IDGenerator {
 
         UUID potentialUUID = UUID.randomUUID();
 
-        if (checkID(potentialUUID)) {
-            return potentialUUID;
-        } else {
-            return generateID();
-        }
+        return potentialUUID;
     }
 
     public static String toString(UUID uuid) {
